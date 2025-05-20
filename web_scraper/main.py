@@ -1,7 +1,7 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
-import locations
+import items
 
 env_path = "../.env.development.local"
 
@@ -18,7 +18,7 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-locations.insert_locations(cur)
+items.insert_items(cur)
 
 conn.commit()
 cur.close()
