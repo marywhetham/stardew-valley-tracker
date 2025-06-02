@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import pprint
+import common
 
 def get_item_info(info):
     url = 'https://stardewvalleywiki.com' + info["link"]
@@ -13,11 +13,11 @@ def get_item_info(info):
 
     info_table = soup.select_one("#infoboxtable")
     if info_table:
-        season_info = get_info_from_table(info_table, "Season")
+        season_info = common.get_links_from_table(info_table, "Season")
         if season_info:
             seasons = [season for season in map(lambda link: determine_season(link.text), season_info) if season is not None]
 
-        source_info = get_info_from_table(info_table, "Source")
+        source_info = common.get_links_from_table(info_table, "Source")
         if source_info:
             sources = list(map(lambda link: link.text, source_info))
 
@@ -26,13 +26,6 @@ def get_item_info(info):
             sources.append("Farming")
 
     return (info["name"], seasons if seasons else None, sources if sources else None)
-
-def get_info_from_table(table, desc_name):
-    tr_with_source = next(
-        (tr for tr in table.find_all("tr") if tr.find("td", string=lambda text: text and desc_name in text)),
-        None
-    )
-    return tr_with_source.select("a") if tr_with_source is not None else None
 
 def determine_season(season):
     if (season == "Spring"):

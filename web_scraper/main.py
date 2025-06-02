@@ -1,7 +1,7 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
-import items
+import skills
 
 env_path = "../.env.development.local"
 
@@ -18,7 +18,7 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-items.insert_items(cur)
+skills.insert_skills(cur)
 
 conn.commit()
 cur.close()
